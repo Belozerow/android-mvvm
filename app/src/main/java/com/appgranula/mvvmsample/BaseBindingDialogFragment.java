@@ -1,15 +1,14 @@
 package com.appgranula.mvvmsample;
 
+import android.app.Dialog;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.appgranula.mvvmsample.activity.BaseActivity;
 import com.appgranula.mvvmsample.binding.DataBindingClassUtils;
 import com.appgranula.mvvmsample.utils.TypeResolver;
 import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
@@ -18,21 +17,19 @@ import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
- * Date: 10.11.2015
+ * Date: 19.01.2016
  */
-public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends BaseFragmentViewModel> extends Fragment {
-    public static final String ADD_TO_BACK_STACK = "add_to_back_stack";
+@SuppressWarnings("unused")
+public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M extends BaseFragmentViewModel> extends DialogFragment {
     private final Class<B> bindingClass;
     private final Class<M> modelClass;
     private B binding;
     private M model;
     private static final String EXTRA_MODEL = "extra_model";
 
-
     @SuppressWarnings("unchecked")
-    public BaseBindingFragment() {
-        super();
-        Class<?>[] typeArguments = TypeResolver.resolveRawArguments(BaseBindingFragment.class, getClass());
+    public BaseBindingDialogFragment() {
+        Class<?>[] typeArguments = TypeResolver.resolveRawArguments(BaseBindingDialogFragment.class, getClass());
         this.bindingClass = (Class<B>) typeArguments[0];
         this.modelClass = (Class<M>) typeArguments[1];
     }
@@ -43,44 +40,40 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
         model.onResume();
     }
 
-    public String getFragmentTag() {
-        return getClass().getSimpleName();
-    }
+    public abstract String getFragmentTag();
 
     protected B getBinding() {
         return binding;
     }
 
-    @SuppressWarnings("unused")
-    public M getModel() {
+    protected M getModel() {
         return model;
     }
 
+    @NonNull
+    @SuppressWarnings("unchecked")
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            getFragmentManager().popBackStack();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = (B) DataBindingClassUtils.getViewDataBinding(bindingClass, inflater, container);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        binding = (B) DataBindingClassUtils.getViewDataBinding(bindingClass, LayoutInflater.from(getActivity()), null);
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), getStyle())
+                .setTitle(getTitle())
+                .setView(binding.getRoot())
+                .create();
         createModel(savedInstanceState);
+        onBeforeDialogCreated(alertDialog);
+        return alertDialog;
     }
 
-    protected BaseActivity getBaseActivity() {
-        return (BaseActivity) getActivity();
+    protected int getStyle(){
+        return R.style.AppTheme_Dialog;
+    }
+
+    protected abstract String getTitle();
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @SuppressWarnings({"unchecked", "TryWithIdenticalCatches"})
@@ -103,17 +96,12 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
         model.onModelAttached();
     }
 
+    protected void onBeforeDialogCreated(Dialog dialog) {
+
+    }
+
     protected void onViewModelCreated(M model) {
 
-    }
-
-    @SuppressWarnings("unused")
-    public void replaceFragment(BaseBindingFragment fragment) {
-        getBaseActivity().replaceFragment(fragment, false);
-    }
-
-    public void replaceFragmentWithBackStack(BaseBindingFragment fragment) {
-        getBaseActivity().replaceFragment(fragment, true);
     }
 
     @Override
@@ -126,9 +114,5 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
     public void onDestroyView() {
         super.onDestroyView();
         model.onDestroyView();
-    }
-
-    public boolean onBackPressed() {
-        return false;
     }
 }

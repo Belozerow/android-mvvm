@@ -1,12 +1,12 @@
 /**
  * Copyright 2002-2015 the original author or authors.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,11 +20,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,16 +34,16 @@ import java.util.WeakHashMap;
  *
  * @author Jonathan Halterman
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings({"restriction", "unused", "JavadocReference", "ConstantConditions", "EqualsBetweenInconvertibleTypes"})
 public final class TypeResolver {
     /** Cache of type variable/argument pairs */
     private static final Map<Class<?>, Reference<Map<TypeVariable<?>, Type>>> typeVariableCache = Collections
-            .synchronizedMap(new WeakHashMap<Class<?>, Reference<Map<TypeVariable<?>, Type>>>());
+            .synchronizedMap(new WeakHashMap<>());
     private static volatile int METHOD_REF_OFFSET = -1;
     private static volatile boolean CACHE_ENABLED = true;
     private static boolean SUPPORTS_LAMBDAS;
     private static Method GET_CONSTANT_POOL;
-    private static Map<String, Method> OBJECT_METHODS = new HashMap<String, Method>();
+    private static Map<String, Method> OBJECT_METHODS = new HashMap<>();
 
     /** An unknown type. */
     public static final class Unknown {
@@ -234,7 +232,7 @@ public final class TypeResolver {
         Map<TypeVariable<?>, Type> map = ref != null ? ref.get() : null;
 
         if (map == null) {
-            map = new HashMap<TypeVariable<?>, Type>();
+            map = new HashMap<>();
 
 
             // Populate interfaces
@@ -263,7 +261,7 @@ public final class TypeResolver {
             }
 
             if (CACHE_ENABLED)
-                typeVariableCache.put(targetType, new WeakReference<Map<TypeVariable<?>, Type>>(map));
+                typeVariableCache.put(targetType, new WeakReference<>(map));
         }
 
         return map;

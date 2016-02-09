@@ -11,8 +11,6 @@ import com.appgranula.mvvmsample.viewmodel.SecondScreenViewModel;
  * Date: 25.12.2015
  */
 public class SecondScreenFragment extends BaseBindingFragment<FragmentSecondScreenBinding, SecondScreenViewModel> {
-    public static final String TAG = "SecondScreenFragment";
-
     public static SecondScreenFragment newInstance() {
 
         Bundle args = new Bundle();

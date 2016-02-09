@@ -19,17 +19,8 @@ public class ExampleFragment extends BaseBindingFragment<FragmentExampleBinding,
     }
 
     @Override
-    protected void onModelCreated(ExampleViewModel model) {
-        super.onModelCreated(model);
-        model.setOnAction(new ExampleViewModel.OnAction() {
-            @Override
-            public void goToNextScreen() {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer, SecondScreenFragment.newInstance())
-                        .addToBackStack(SecondScreenFragment.TAG)
-                        .commitAllowingStateLoss();
-            }
-        });
+    protected void onViewModelCreated(ExampleViewModel model) {
+        super.onViewModelCreated(model);
+        getBinding().image.setOnClickListener(view -> replaceFragmentWithBackStack(SecondScreenFragment.newInstance()));
     }
 }

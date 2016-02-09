@@ -1,4 +1,4 @@
-package com.appgranula.mvvmsample.utils;
+package com.appgranula.mvvmsample.binding;
 
 import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
@@ -9,11 +9,15 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 /**
- * Created by Belozerow on 29.11.2015.
+ * Created: Belozerov
+ * Company: APPGRANULA LLC
+ * Date: 29.11.2015
  */
-public class DataBindingUtils {
+public class DataBindingClassUtils {
+    @SuppressWarnings("unchecked")
     private static HashMap<Class, Method> methodHashMap = new HashMap();
 
+    @SuppressWarnings({"unchecked", "TryWithIdenticalCatches"})
     public static ViewDataBinding getViewDataBinding(Class clazz, LayoutInflater inflater, ViewGroup container) {
         Method method = methodHashMap.get(clazz);
         try {
