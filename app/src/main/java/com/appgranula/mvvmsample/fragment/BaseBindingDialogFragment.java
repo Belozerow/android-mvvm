@@ -1,4 +1,4 @@
-package com.appgranula.mvvmsample;
+package com.appgranula.mvvmsample.fragment;
 
 import android.app.Dialog;
 import android.databinding.ViewDataBinding;
@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.appgranula.mvvmsample.R;
 import com.appgranula.mvvmsample.binding.DataBindingClassUtils;
 import com.appgranula.mvvmsample.utils.TypeResolver;
 import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
@@ -21,11 +22,11 @@ import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
  */
 @SuppressWarnings("unused")
 public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M extends BaseFragmentViewModel> extends DialogFragment {
+    private static final String EXTRA_MODEL = "extra_model";
     private final Class<B> bindingClass;
     private final Class<M> modelClass;
     private B binding;
     private M model;
-    private static final String EXTRA_MODEL = "extra_model";
 
     @SuppressWarnings("unchecked")
     public BaseBindingDialogFragment() {

@@ -1,4 +1,4 @@
-package com.appgranula.mvvmsample;
+package com.appgranula.mvvmsample.fragment;
 
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -22,11 +22,11 @@ import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
  */
 public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends BaseFragmentViewModel> extends Fragment {
     public static final String ADD_TO_BACK_STACK = "add_to_back_stack";
+    private static final String EXTRA_MODEL = "extra_model";
     private final Class<B> bindingClass;
     private final Class<M> modelClass;
     private B binding;
     private M model;
-    private static final String EXTRA_MODEL = "extra_model";
 
 
     @SuppressWarnings("unchecked")

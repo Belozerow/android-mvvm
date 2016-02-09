@@ -1,4 +1,4 @@
-package com.appgranula.mvvmsample;
+package com.appgranula.mvvmsample.fragment;
 
 import android.os.Bundle;
 

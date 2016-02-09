@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
-import com.appgranula.mvvmsample.BaseBindingFragment;
 import com.appgranula.mvvmsample.R;
+import com.appgranula.mvvmsample.fragment.BaseBindingFragment;
 
 /**
  * Created: Belozerov

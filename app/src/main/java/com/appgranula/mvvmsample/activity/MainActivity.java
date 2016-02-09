@@ -2,8 +2,8 @@ package com.appgranula.mvvmsample.activity;
 
 import android.os.Bundle;
 
-import com.appgranula.mvvmsample.ExampleFragment;
 import com.appgranula.mvvmsample.R;
+import com.appgranula.mvvmsample.fragment.ExampleFragment;
 
 /**
  * Created: Belozerov
