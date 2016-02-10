@@ -14,6 +14,19 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 public class ObservableBoolean extends BaseObservable implements Parcelable, Serializable {
+    public static final Creator<ObservableBoolean> CREATOR
+            = new Creator<ObservableBoolean>() {
+
+        @Override
+        public ObservableBoolean createFromParcel(Parcel source) {
+            return new ObservableBoolean(source.readInt() == 1);
+        }
+
+        @Override
+        public ObservableBoolean[] newArray(int size) {
+            return new ObservableBoolean[size];
+        }
+    };
     static final long serialVersionUID = 1L;
     private Boolean mValue;
 
@@ -31,6 +44,12 @@ public class ObservableBoolean extends BaseObservable implements Parcelable, Ser
      */
     @SuppressWarnings("unused")
     public ObservableBoolean() {
+    }
+
+    @SuppressWarnings("unused")
+    @BindingConversion
+    public static Boolean convertToBoolean(ObservableBoolean observableBoolean) {
+        return observableBoolean.get();
     }
 
     public Boolean get() {
@@ -52,25 +71,5 @@ public class ObservableBoolean extends BaseObservable implements Parcelable, Ser
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mValue ? 1 : 0);
-    }
-
-    public static final Creator<ObservableBoolean> CREATOR
-            = new Creator<ObservableBoolean>() {
-
-        @Override
-        public ObservableBoolean createFromParcel(Parcel source) {
-            return new ObservableBoolean(source.readInt() == 1);
-        }
-
-        @Override
-        public ObservableBoolean[] newArray(int size) {
-            return new ObservableBoolean[size];
-        }
-    };
-
-    @SuppressWarnings("unused")
-    @BindingConversion
-    public static Boolean convertToBoolean(ObservableBoolean observableBoolean) {
-        return observableBoolean.get();
     }
 }

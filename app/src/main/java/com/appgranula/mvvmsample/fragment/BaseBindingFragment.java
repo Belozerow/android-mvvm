@@ -10,9 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appgranula.mvvmsample.activity.BaseActivity;
+import com.appgranula.mvvmsample.api.Api;
 import com.appgranula.mvvmsample.binding.DataBindingClassUtils;
 import com.appgranula.mvvmsample.utils.TypeResolver;
 import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
+
+import java.util.ArrayList;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -27,6 +38,7 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
     private final Class<M> modelClass;
     private B binding;
     private M model;
+    private ArrayList<Subscription> subscriptions = new ArrayList<>();
 
 
     @SuppressWarnings("unchecked")
@@ -98,6 +110,7 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
             }
         }
         binding.setVariable(com.appgranula.mvvmsample.BR.viewModel, model);
+        model.setApi(getBaseActivity().getApi());
         model.onViewCreated();
         onViewModelCreated(model);
         model.onModelAttached();
@@ -116,6 +129,10 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
         getBaseActivity().replaceFragment(fragment, true);
     }
 
+    public Api getApi() {
+        return getBaseActivity().getApi();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -128,7 +145,40 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding, M extends B
         model.onDestroyView();
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        for (Subscription subscription : subscriptions) {
+            subscription.unsubscribe();
+        }
+        subscriptions.clear();
+    }
+
     public boolean onBackPressed() {
         return false;
+    }
+
+    @SuppressWarnings({"unchecked", "unused"})
+    public <T> void subscribe(Observable<T> observable, Subscriber<T> subscriber) {
+        subscriptions.add(observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber));
+    }
+
+    @SuppressWarnings({"unchecked", "unused"})
+    public <T> void subscribe(Observable<T> observable, Action1<T> onNext) {
+        subscriptions.add(observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(onNext));
+    }
+
+    @SuppressWarnings({"unchecked", "unused"})
+    public <T> void subscribe(Observable<T> observable, Action1<T> onNext, Action1<Throwable> onError) {
+        subscriptions.add(observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));
+    }
+
+    @SuppressWarnings({"unchecked", "unused"})
+    public <T> void subscribe(Observable<T> observable, Action1<T> onNext, Action1<Throwable> onError, Action0 onComplete) {
+        subscriptions.add(observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError, onComplete));
     }
 }

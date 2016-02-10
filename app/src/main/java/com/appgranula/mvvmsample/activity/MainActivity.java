@@ -2,7 +2,6 @@ package com.appgranula.mvvmsample.activity;
 
 import android.os.Bundle;
 
-import com.appgranula.mvvmsample.R;
 import com.appgranula.mvvmsample.fragment.ExampleFragment;
 
 /**
@@ -15,8 +14,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             replaceFragment(ExampleFragment.newInstance(), false);
         }
     }

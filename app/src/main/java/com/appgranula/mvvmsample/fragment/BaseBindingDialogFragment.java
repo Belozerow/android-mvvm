@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.appgranula.mvvmsample.R;
+import com.appgranula.mvvmsample.activity.BaseActivity;
 import com.appgranula.mvvmsample.binding.DataBindingClassUtils;
 import com.appgranula.mvvmsample.utils.TypeResolver;
 import com.appgranula.mvvmsample.viewmodel.BaseFragmentViewModel;
@@ -65,7 +66,7 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
         return alertDialog;
     }
 
-    protected int getStyle(){
+    protected int getStyle() {
         return R.style.AppTheme_Dialog;
     }
 
@@ -92,9 +93,14 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
             }
         }
         binding.setVariable(com.appgranula.mvvmsample.BR.viewModel, model);
+        model.setApi(getBaseActivity().getApi());
         model.onViewCreated();
         onViewModelCreated(model);
         model.onModelAttached();
+    }
+
+    protected BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
     }
 
     protected void onBeforeDialogCreated(Dialog dialog) {

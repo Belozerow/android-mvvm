@@ -15,8 +15,6 @@ import java.io.Serializable;
 
 @SuppressWarnings("unused")
 public class ObservableString extends BaseObservable implements Parcelable, Serializable {
-    static final long serialVersionUID = 1L;
-    private String mValue;
     public static final Creator<ObservableString> CREATOR = new Creator<ObservableString>() {
         public ObservableString createFromParcel(Parcel source) {
             return new ObservableString(source.readString());
@@ -26,12 +24,23 @@ public class ObservableString extends BaseObservable implements Parcelable, Seri
             return new ObservableString[size];
         }
     };
+    static final long serialVersionUID = 1L;
+    private String mValue;
 
     public ObservableString(String value) {
         this.mValue = value;
     }
 
     public ObservableString() {
+    }
+
+    public static boolean equals(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
+    }
+
+    @BindingConversion
+    public static String convertToString(ObservableString s) {
+        return s.get();
     }
 
     public String get() {
@@ -46,10 +55,6 @@ public class ObservableString extends BaseObservable implements Parcelable, Seri
 
     }
 
-    public static boolean equals(Object a, Object b) {
-        return (a == b) || (a != null && a.equals(b));
-    }
-
     public int describeContents() {
         return 0;
     }
@@ -60,10 +65,5 @@ public class ObservableString extends BaseObservable implements Parcelable, Seri
 
     public boolean isEmpty() {
         return mValue == null || mValue.isEmpty();
-    }
-
-    @BindingConversion
-    public static String convertToString(ObservableString s) {
-        return s.get();
     }
 }

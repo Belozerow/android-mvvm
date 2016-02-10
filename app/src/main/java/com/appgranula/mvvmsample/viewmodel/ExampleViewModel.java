@@ -1,6 +1,6 @@
 package com.appgranula.mvvmsample.viewmodel;
 
-import android.databinding.ObservableField;
+import com.appgranula.mvvmsample.binding.ObservableString;
 
 /**
  * Created: Belozerov
@@ -8,7 +8,7 @@ import android.databinding.ObservableField;
  * Date: 23.12.2015
  */
 public class ExampleViewModel extends BaseFragmentViewModel {
-    public ObservableField<String> imageUrl = new ObservableField<>();
+    public ObservableString imageUrl = new ObservableString();
 
     @Override
     public void onViewCreated() {

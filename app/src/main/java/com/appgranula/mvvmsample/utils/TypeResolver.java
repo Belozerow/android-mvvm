@@ -1,12 +1,12 @@
 /**
  * Copyright 2002-2015 the original author or authors.
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,12 +44,6 @@ public final class TypeResolver {
     private static boolean SUPPORTS_LAMBDAS;
     private static Method GET_CONSTANT_POOL;
     private static Map<String, Method> OBJECT_METHODS = new HashMap<>();
-
-    /** An unknown type. */
-    public static final class Unknown {
-        private Unknown() {
-        }
-    }
 
     private TypeResolver() {
     }
@@ -267,9 +261,6 @@ public final class TypeResolver {
         return map;
     }
 
-    private static final class MethodRefOffsetResolutionFailed extends RuntimeException {
-    }
-
     /**
      * Populates the {@code map} with with variable/argument pairs for the given {@code types}.
      */
@@ -347,5 +338,16 @@ public final class TypeResolver {
             bound = resolveBound((TypeVariable<?>) bound);
 
         return bound == Object.class ? Unknown.class : bound;
+    }
+
+    /**
+     * An unknown type.
+     */
+    public static final class Unknown {
+        private Unknown() {
+        }
+    }
+
+    private static final class MethodRefOffsetResolutionFailed extends RuntimeException {
     }
 }

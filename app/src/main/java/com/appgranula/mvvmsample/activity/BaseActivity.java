@@ -2,12 +2,15 @@ package com.appgranula.mvvmsample.activity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
 import com.appgranula.mvvmsample.R;
+import com.appgranula.mvvmsample.api.Api;
+import com.appgranula.mvvmsample.api.ApiFragment;
 import com.appgranula.mvvmsample.fragment.BaseBindingFragment;
 
 /**
@@ -15,8 +18,48 @@ import com.appgranula.mvvmsample.fragment.BaseBindingFragment;
  * Company: APPGRANULA LLC
  * Date: 25.12.2015
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
+    protected static final int NO_FRAGMENT_CONTAINER = -1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getContentLayout());
+
+        if (savedInstanceState == null) {
+            createApiFragment();
+        }
+
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+    }
+
+    public Api getApi() {
+        return (ApiFragment) getSupportFragmentManager().findFragmentById(getApiFragmentContainer());
+    }
+
+    private void createApiFragment() {
+        if (getApiFragmentContainer() == NO_FRAGMENT_CONTAINER)
+            return;
+        getSupportFragmentManager().beginTransaction()
+                .replace(getApiFragmentContainer(), ApiFragment.newInstance())
+                .commit();
+    }
+
+    protected int getContentLayout() {
+        return R.layout.activity_base;
+    }
+
+    protected int getApiFragmentContainer() {
+        return R.id.fragmentApiContainer;
+    }
+
+    protected int getFragmentContainer() {
+        return R.id.fragmentContainer;
+    }
+
     public void replaceFragment(BaseBindingFragment fragment, boolean addToBackStack) {
+        if (getFragmentContainer() == NO_FRAGMENT_CONTAINER)
+            return;
         Bundle arguments;
         if (fragment.getArguments() == null) {
             arguments = new Bundle();
@@ -36,12 +79,12 @@ public class BaseActivity extends AppCompatActivity {
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(fragment.getFragmentTag());
         }
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment, fragment.getFragmentTag());
+        fragmentTransaction.replace(getFragmentContainer(), fragment, fragment.getFragmentTag());
         fragmentTransaction.commitAllowingStateLoss();
     }
 
     public BaseBindingFragment getLastFragment() {
-        return (BaseBindingFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        return (BaseBindingFragment) getSupportFragmentManager().findFragmentById(getFragmentContainer());
     }
 
     @Override
@@ -60,5 +103,12 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        if (getLastFragment() != null) {
+            getApi().clearCacheExcept(getLastFragment().getModel().getModelTag());
+        }
     }
 }
