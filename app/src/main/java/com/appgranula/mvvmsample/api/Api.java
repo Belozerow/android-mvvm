@@ -8,7 +8,7 @@ import rx.Observable;
  * Date: 09.02.2016
  */
 public interface Api {
-    <T> Observable<T> executeWithCache(String modelTag, String tag, Observable<T> observable);
+    <T> Observable<T> executeCached(String modelTag, String tag, Observable<T> observable);
 
     <T> Observable<T> execute(Observable<T> observable);
 

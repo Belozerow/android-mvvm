@@ -57,13 +57,23 @@ public class BaseFragmentViewModel implements Serializable {
     }
 
     @SuppressWarnings("unused")
-    public <T> Observable<T> executeWithCache(Observable<T> observable) {
-        return api.executeWithCache(getModelTag(), getModelTag(), observable);
+    public <T> Observable<T> executeCached(Observable<T> observable) {
+        return api.executeCached(getModelTag(), getModelTag(), observable);
     }
 
     @SuppressWarnings("unused")
-    public <T> Observable<T> executeWithCache(String tag, Observable<T> observable) {
-        return api.executeWithCache(getModelTag(), tag, observable);
+    public <T> Observable<T> reExecuteCached(Observable<T> observable) {
+        return reExecuteCached(getModelTag(), observable);
+    }
+
+    public <T> Observable<T> reExecuteCached(String tag, Observable<T> observable) {
+        clearCache(tag);
+        return executeCached(tag, observable);
+    }
+
+    @SuppressWarnings("unused")
+    public <T> Observable<T> executeCached(String tag, Observable<T> observable) {
+        return api.executeCached(getModelTag(), tag, observable);
     }
 
     @SuppressWarnings("unused")

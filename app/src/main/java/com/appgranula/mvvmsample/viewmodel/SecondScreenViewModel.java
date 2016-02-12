@@ -25,7 +25,7 @@ public class SecondScreenViewModel extends BaseFragmentViewModel {
     public Observable<String> calculateDistance() {
         String original = "55.1921269,61.3305967";
         String destination = "55.171783,61.0920729";
-        Observable<String> result = executeWithCache(RetrofitFactory.getGoogleDirectionsApiService().getGoogleDirection(original, destination).flatMap(responseBody -> {
+        Observable<String> result = executeCached(RetrofitFactory.getGoogleDirectionsApiService().getGoogleDirection(original, destination).flatMap(responseBody -> {
             try {
                 return Observable.just(responseBody.string());
             } catch (IOException e) {

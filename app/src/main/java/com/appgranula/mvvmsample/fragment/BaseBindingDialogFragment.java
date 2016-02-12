@@ -1,6 +1,7 @@
 package com.appgranula.mvvmsample.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
     private final Class<M> modelClass;
     private B binding;
     private M model;
+    private DialogInterface.OnDismissListener onDismissListener;
 
     @SuppressWarnings("unchecked")
     public BaseBindingDialogFragment() {
@@ -52,18 +54,32 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
         return model;
     }
 
-    @NonNull
+    public DialogInterface.OnDismissListener getOnDismissListener() {
+        return onDismissListener;
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
+
     @SuppressWarnings("unchecked")
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         binding = (B) DataBindingClassUtils.getViewDataBinding(bindingClass, LayoutInflater.from(getActivity()), null);
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), getStyle())
-                .setTitle(getTitle())
-                .setView(binding.getRoot())
-                .create();
         createModel(savedInstanceState);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), getStyle())
+                .setTitle(getTitle())
+                .setView(binding.getRoot());
         onBeforeDialogCreated(alertDialog);
-        return alertDialog;
+        return alertDialog.create();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (onDismissListener != null)
+            onDismissListener.onDismiss(dialog);
     }
 
     protected int getStyle() {
@@ -103,7 +119,7 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
         return (BaseActivity) getActivity();
     }
 
-    protected void onBeforeDialogCreated(Dialog dialog) {
+    protected void onBeforeDialogCreated(AlertDialog.Builder dialogBuilder) {
 
     }
 

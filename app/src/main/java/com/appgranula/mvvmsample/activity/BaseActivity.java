@@ -19,8 +19,6 @@ import com.appgranula.mvvmsample.fragment.BaseBindingFragment;
  * Date: 25.12.2015
  */
 public class BaseActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
-    protected static final int NO_FRAGMENT_CONTAINER = -1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +32,17 @@ public class BaseActivity extends AppCompatActivity implements FragmentManager.O
     }
 
     public Api getApi() {
-        return (ApiFragment) getSupportFragmentManager().findFragmentById(getApiFragmentContainer());
+        if (!hasApiContainer()) {
+            throw new UnsupportedOperationException("You should add api fragment container to your layout. Default id is \"fragmentApiContainer\". Please, use default layout R.layout.activity_base if it's possible.");
+        }
+        return (ApiFragment) getSupportFragmentManager().findFragmentById(getApiFragmentContainerId());
     }
 
     private void createApiFragment() {
-        if (getApiFragmentContainer() == NO_FRAGMENT_CONTAINER)
+        if (!hasApiContainer())
             return;
         getSupportFragmentManager().beginTransaction()
-                .replace(getApiFragmentContainer(), ApiFragment.newInstance())
+                .replace(getApiFragmentContainerId(), ApiFragment.newInstance())
                 .commit();
     }
 
@@ -49,17 +50,18 @@ public class BaseActivity extends AppCompatActivity implements FragmentManager.O
         return R.layout.activity_base;
     }
 
-    protected int getApiFragmentContainer() {
+    protected int getApiFragmentContainerId() {
         return R.id.fragmentApiContainer;
     }
 
-    protected int getFragmentContainer() {
+    protected int getFragmentContainerId() {
         return R.id.fragmentContainer;
     }
 
     public void replaceFragment(BaseBindingFragment fragment, boolean addToBackStack) {
-        if (getFragmentContainer() == NO_FRAGMENT_CONTAINER)
-            return;
+        if (!hasFragmentContainer()) {
+            throw new UnsupportedOperationException("You should add fragment container to your layout. Default id is \"fragmentContainer\". Please, use default layout R.layout.activity_base if it's possible.");
+        }
         Bundle arguments;
         if (fragment.getArguments() == null) {
             arguments = new Bundle();
@@ -79,12 +81,23 @@ public class BaseActivity extends AppCompatActivity implements FragmentManager.O
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(fragment.getFragmentTag());
         }
-        fragmentTransaction.replace(getFragmentContainer(), fragment, fragment.getFragmentTag());
+        fragmentTransaction.replace(getFragmentContainerId(), fragment, fragment.getFragmentTag());
         fragmentTransaction.commitAllowingStateLoss();
     }
 
     public BaseBindingFragment getLastFragment() {
-        return (BaseBindingFragment) getSupportFragmentManager().findFragmentById(getFragmentContainer());
+        if (!hasFragmentContainer()) {
+            throw new UnsupportedOperationException("You should add fragment container to your layout. Default id is \"fragmentContainer\". Please, use default layout R.layout.activity_base if it's possible.");
+        }
+        return (BaseBindingFragment) getSupportFragmentManager().findFragmentById(getFragmentContainerId());
+    }
+
+    private boolean hasApiContainer() {
+        return findViewById(getApiFragmentContainerId()) != null;
+    }
+
+    private boolean hasFragmentContainer() {
+        return findViewById(getFragmentContainerId()) != null;
     }
 
     @Override
@@ -107,8 +120,10 @@ public class BaseActivity extends AppCompatActivity implements FragmentManager.O
 
     @Override
     public void onBackStackChanged() {
-        if (getLastFragment() != null) {
-            getApi().clearCacheExcept(getLastFragment().getModel().getModelTag());
+        if (hasApiContainer() && hasFragmentContainer()) {
+            if (getLastFragment() != null) {
+                getApi().clearCacheExcept(getLastFragment().getModel().getModelTag());
+            }
         }
     }
 }

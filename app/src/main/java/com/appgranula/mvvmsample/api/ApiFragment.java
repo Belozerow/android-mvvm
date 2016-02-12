@@ -33,7 +33,7 @@ public class ApiFragment extends Fragment implements Api {
     }
 
     @Override
-    public <T> Observable<T> executeWithCache(String modelTag, String methodTag, Observable<T> observable) {
+    public <T> Observable<T> executeCached(String modelTag, String methodTag, Observable<T> observable) {
         HashMap<String, Observable> fragmentMap = observableHashMap.get(modelTag);
         if (fragmentMap == null) {
             fragmentMap = new HashMap<>();
