@@ -1,4 +1,4 @@
-package com.appgranula.bindingutils.binding.typeadapters;
+package com.appgranula.retrofitbindingconverters.typeadapters;
 
 import com.appgranula.bindingutils.binding.ObservableBoolean;
 import com.google.gson.TypeAdapter;

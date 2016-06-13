@@ -4,10 +4,10 @@ import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 
-import com.appgranula.bindingutils.binding.typeadapters.ObservableBooleanTypeAdapter;
-import com.appgranula.bindingutils.binding.typeadapters.ObservableIntTypeAdapter;
-import com.appgranula.bindingutils.binding.typeadapters.ObservableLongTypeAdapter;
-import com.appgranula.bindingutils.binding.typeadapters.ObservableStringTypeAdapter;
+import com.appgranula.retrofitbindingconverters.typeadapters.ObservableBooleanTypeAdapter;
+import com.appgranula.retrofitbindingconverters.typeadapters.ObservableIntTypeAdapter;
+import com.appgranula.retrofitbindingconverters.typeadapters.ObservableLongTypeAdapter;
+import com.appgranula.retrofitbindingconverters.typeadapters.ObservableStringTypeAdapter;
 import com.appgranula.bindingutils.binding.ObservableBoolean;
 import com.appgranula.bindingutils.binding.ObservableString;
 import com.google.gson.Gson;

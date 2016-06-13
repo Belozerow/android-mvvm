@@ -1,1 +1,1 @@
-include ':mvvm-lib', ':mvvm-sample', ':bindingutils'
+include ':mvvm-lib', ':mvvm-sample', ':bindingutils', ':retrofitbindingconverters'
