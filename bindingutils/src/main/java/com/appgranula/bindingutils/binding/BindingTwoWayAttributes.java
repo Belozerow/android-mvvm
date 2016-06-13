@@ -1,4 +1,4 @@
-package com.appgranula.mvvm_sample.binding;
+package com.appgranula.bindingutils.binding;
 
 import android.databinding.BindingAdapter;
 import android.text.Editable;
@@ -7,11 +7,13 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
-import com.appgranula.mvvm.R;
+import com.appgranula.bindingutils.R;
+
 
 /**
  * Created: Belozerov
@@ -63,7 +65,12 @@ public class BindingTwoWayAttributes {
         if (observableBoolean != null) {
             if (view.getTag(R.id.bound_observable) != observableBoolean) {
                 view.setTag(R.id.bound_observable, observableBoolean);
-                view.setOnCheckedChangeListener((buttonView, isChecked) -> observableBoolean.set(isChecked));
+                view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        observableBoolean.set(isChecked);
+                    }
+                });
             }
             Boolean newValue = observableBoolean.get();
             if (newValue != null && view.isChecked() != newValue) {

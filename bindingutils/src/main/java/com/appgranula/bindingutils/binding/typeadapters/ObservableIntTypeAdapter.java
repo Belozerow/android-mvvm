@@ -1,6 +1,7 @@
-package com.appgranula.mvvm_sample.api.typeadapters;
+package com.appgranula.bindingutils.binding.typeadapters;
 
-import com.appgranula.mvvm_sample.binding.ObservableString;
+import android.databinding.ObservableInt;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -8,15 +9,14 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
  * Date: 20.01.2016
  */
-public class ObservableStringTypeAdapter extends TypeAdapter<ObservableString> {
+public class ObservableIntTypeAdapter extends TypeAdapter<ObservableInt> {
     @Override
-    public void write(JsonWriter out, ObservableString value) throws IOException {
+    public void write(JsonWriter out, ObservableInt value) throws IOException {
         if (value == null) {
             out.nullValue();
             return;
@@ -26,12 +26,12 @@ public class ObservableStringTypeAdapter extends TypeAdapter<ObservableString> {
     }
 
     @Override
-    public ObservableString read(JsonReader in) throws IOException {
+    public ObservableInt read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
         }
-        String str = in.nextString();
-        return new ObservableString(str);
+        int val = in.nextInt();
+        return new ObservableInt(val);
     }
 }

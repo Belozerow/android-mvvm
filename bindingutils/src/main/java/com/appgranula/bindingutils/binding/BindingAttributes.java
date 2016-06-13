@@ -1,16 +1,15 @@
-package com.appgranula.mvvm_sample.binding;
+package com.appgranula.bindingutils.binding;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appgranula.mvvm_sample.utils.CircleTransformation;
+import com.appgranula.bindingutils.binding.utils.CircleTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -67,15 +66,6 @@ public class BindingAttributes {
         }
         int id = context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
         imageView.setImageResource(id);
-    }
-
-    @BindingAdapter({"app:error"})
-    public static void setTextInputError(TextInputLayout textInputLayout, String error) {
-        if (TextUtils.isEmpty(error)) {
-            textInputLayout.setError(null);
-        } else {
-            textInputLayout.setError(error);
-        }
     }
 
     @BindingAdapter({"app:onActionDone"})

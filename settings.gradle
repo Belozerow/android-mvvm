@@ -1,1 +1,1 @@
-include ':mvvm-lib', ':mvvm-sample'
+include ':mvvm-lib', ':mvvm-sample', ':bindingutils'

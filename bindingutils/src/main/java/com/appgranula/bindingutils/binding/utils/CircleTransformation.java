@@ -1,4 +1,4 @@
-package com.appgranula.mvvm_sample.utils;
+package com.appgranula.bindingutils.binding.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

@@ -1,6 +1,6 @@
 package com.appgranula.mvvm_sample.viewmodel;
 
-import com.appgranula.mvvm_sample.binding.ObservableString;
+import com.appgranula.bindingutils.binding.ObservableString;
 import com.appgranula.mvvm.viewmodel.BaseFragmentViewModel;
 
 /**

@@ -4,12 +4,12 @@ import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 
-import com.appgranula.mvvm_sample.api.typeadapters.ObservableBooleanTypeAdapter;
-import com.appgranula.mvvm_sample.api.typeadapters.ObservableIntTypeAdapter;
-import com.appgranula.mvvm_sample.api.typeadapters.ObservableLongTypeAdapter;
-import com.appgranula.mvvm_sample.api.typeadapters.ObservableStringTypeAdapter;
-import com.appgranula.mvvm_sample.binding.ObservableBoolean;
-import com.appgranula.mvvm_sample.binding.ObservableString;
+import com.appgranula.bindingutils.binding.typeadapters.ObservableBooleanTypeAdapter;
+import com.appgranula.bindingutils.binding.typeadapters.ObservableIntTypeAdapter;
+import com.appgranula.bindingutils.binding.typeadapters.ObservableLongTypeAdapter;
+import com.appgranula.bindingutils.binding.typeadapters.ObservableStringTypeAdapter;
+import com.appgranula.bindingutils.binding.ObservableBoolean;
+import com.appgranula.bindingutils.binding.ObservableString;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Interceptor;

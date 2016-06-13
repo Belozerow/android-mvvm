@@ -1,4 +1,4 @@
-package com.appgranula.mvvm_sample.binding;
+package com.appgranula.bindingutils.binding;
 
 import android.databinding.BaseObservable;
 import android.databinding.BindingConversion;

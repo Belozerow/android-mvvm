@@ -1,6 +1,7 @@
-package com.appgranula.mvvm_sample.api.typeadapters;
+package com.appgranula.bindingutils.binding.typeadapters;
 
-import com.appgranula.mvvm_sample.binding.ObservableBoolean;
+import android.databinding.ObservableLong;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -8,15 +9,14 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
  * Date: 20.01.2016
  */
-public class ObservableBooleanTypeAdapter extends TypeAdapter<ObservableBoolean> {
+public class ObservableLongTypeAdapter extends TypeAdapter<ObservableLong> {
     @Override
-    public void write(JsonWriter out, ObservableBoolean value) throws IOException {
+    public void write(JsonWriter out, ObservableLong value) throws IOException {
         if (value == null) {
             out.nullValue();
             return;
@@ -26,12 +26,12 @@ public class ObservableBooleanTypeAdapter extends TypeAdapter<ObservableBoolean>
     }
 
     @Override
-    public ObservableBoolean read(JsonReader in) throws IOException {
+    public ObservableLong read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
         }
-        boolean val = in.nextBoolean();
-        return new ObservableBoolean(val);
+        long val = in.nextLong();
+        return new ObservableLong(val);
     }
 }

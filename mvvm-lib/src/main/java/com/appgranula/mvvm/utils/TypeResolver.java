@@ -37,7 +37,7 @@ import java.util.WeakHashMap;
 @SuppressWarnings({"restriction", "unused", "JavadocReference", "ConstantConditions", "EqualsBetweenInconvertibleTypes"})
 public final class TypeResolver {
     /** Cache of type variable/argument pairs */
-    private static final Map<Class<?>, Reference<Map<TypeVariable<?>, Type>>> typeVariableCache = Collections
+    private static final Map<Object, Object> typeVariableCache = Collections
             .synchronizedMap(new WeakHashMap<>());
     private static volatile int METHOD_REF_OFFSET = -1;
     private static volatile boolean CACHE_ENABLED = true;
@@ -222,7 +222,7 @@ public final class TypeResolver {
 
     private static Map<TypeVariable<?>, Type> getTypeVariableMap(final Class<?> targetType,
                                                                  Class<?> functionalInterface) {
-        Reference<Map<TypeVariable<?>, Type>> ref = typeVariableCache.get(targetType);
+        Reference<Map<TypeVariable<?>, Type>> ref = (Reference<Map<TypeVariable<?>, Type>>) typeVariableCache.get(targetType);
         Map<TypeVariable<?>, Type> map = ref != null ? ref.get() : null;
 
         if (map == null) {
