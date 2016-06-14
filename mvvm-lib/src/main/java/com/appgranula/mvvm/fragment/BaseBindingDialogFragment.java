@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.appgranula.mvvm.R;
 import com.appgranula.mvvm.activity.BaseMVVMActivity;
 import com.appgranula.mvvm.api.BaseMVVMApi;
 import com.appgranula.mvvm.binding.DataBindingClassUtils;
@@ -81,8 +80,13 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         binding = (B) DataBindingClassUtils.getViewDataBinding(bindingClass, LayoutInflater.from(getActivity()), null);
         createModel(savedInstanceState);
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), getStyle())
-                .setTitle(getTitle())
+        AlertDialog.Builder alertDialog;
+        if (getStyle() != -1) {
+            alertDialog = new AlertDialog.Builder(getActivity(), getStyle());
+        } else {
+            alertDialog = new AlertDialog.Builder(getActivity());
+        }
+        alertDialog.setTitle(getTitle())
                 .setView(binding.getRoot());
         onBeforeDialogCreated(alertDialog);
         return alertDialog.create();
@@ -96,7 +100,7 @@ public abstract class BaseBindingDialogFragment<B extends ViewDataBinding, M ext
     }
 
     protected int getStyle() {
-        return R.style.AppTheme_Dialog;
+        return -1;
     }
 
     protected abstract String getTitle();
